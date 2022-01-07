@@ -5,7 +5,7 @@
 			<!-- 表单区域 -->
 			<el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="form">
 				<!-- 用户名 -->
-				<el-form-item prop="user"><el-input placeholder="用户名" v-model="loginForm.user" prefix-icon="el-icon-user-solid"></el-input></el-form-item>
+				<el-form-item prop="user"><el-input placeholder="用户名" v-model="loginForm.user" ref="user" prefix-icon="el-icon-user-solid"></el-input></el-form-item>
 
 				<!-- 密码 -->
 				<el-form-item prop="password"><el-input placeholder="密码" v-model="loginForm.password" prefix-icon="el-icon-lock" type="password"></el-input></el-form-item>
@@ -34,7 +34,9 @@
 				</el-form-item>
 			</el-form>
 		</div>
-		<div class="footer"><span>Copyright ©2022 共享旅途 v1.0.0 All Rights Reserved.</span></div>
+		<div class="footer">
+			<span>{{ systemData.copyright }}</span>
+		</div>
 	</div>
 </template>
 
@@ -87,7 +89,9 @@ export default {
 			// 控制验证码显示与隐藏
 			captchaShow: false,
 			// 控制快捷登录的显示与隐藏
-			switchForm: {}
+			switchForm: {},
+			// 系统信息
+			systemData: {}
 		};
 	},
 	created() {
@@ -95,6 +99,8 @@ export default {
 		this.isCheckCaptcha();
 		// 调用获取快捷登录开关
 		this.getSwitch();
+		// 调用获取系统信息
+		this.getSystem();
 		// 回车进行登录
 		var self = this;
 		document.onkeydown = function(e) {
@@ -197,6 +203,7 @@ export default {
 				'message',
 				function(e) {
 					if (e.data !== '' && e.data.constructor !== Object) {
+						console.log(e.data);
 						const token = window.sessionStorage.getItem('token', e.data);
 						if (token === '' || token === undefined || token === null) {
 							window.sessionStorage.setItem('token', e.data);
@@ -215,7 +222,19 @@ export default {
 			const { data: res } = await this.$http.get('login/switch');
 			if (res.code !== 200) return this.$message.error(res.msg);
 			this.switchForm = res.data;
+		},
+		/**
+		 * 获取系统信息
+		 */
+		async getSystem() {
+			const { data: res } = await this.$http.get('login/system');
+			if (res.code !== 200) return this.$message.error(res.msg);
+			this.systemData = res.data;
 		}
+	},
+	mounted() {
+		// 聚焦
+		this.$refs.user.focus();
 	}
 };
 </script>

@@ -42,7 +42,9 @@ import {
 	Radio,
 	RadioGroup,
 	DatePicker,
-	Loading
+	Loading,
+	Timeline,
+	TimelineItem
 } from 'element-ui'
 Vue.use(Button)
 Vue.use(Form)
@@ -85,6 +87,8 @@ Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(DatePicker)
 Vue.use(Loading)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 // 挂载在vue原型对象上
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
