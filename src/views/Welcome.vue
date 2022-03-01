@@ -113,7 +113,7 @@
 						</div>
 						<div>
 							<el-table :data="buyLogData" border style="width: 100%">
-								<el-table-column prop="uid" label="用户ID" width="80"></el-table-column>
+								<el-table-column prop="user_id" label="用户ID" width="80"></el-table-column>
 								<el-table-column prop="indent" label="订单号" width="190"></el-table-column>
 								<el-table-column prop="money" label="付款金额"></el-table-column>
 							</el-table>

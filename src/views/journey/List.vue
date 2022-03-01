@@ -27,7 +27,7 @@
 				<el-table-column prop="id" label="ID" width="55"></el-table-column>
 				<el-table-column prop="start" label="出发地"></el-table-column>
 				<el-table-column prop="end" label="目的地"></el-table-column>
-				<el-table-column prop="uid" label="用户ID"></el-table-column>
+				<el-table-column prop="user_id" label="发起用户ID"></el-table-column>
 				<el-table-column prop="type" label="发起类型">
 					<template slot-scope="scope">
 						<span v-if="scope.row.type === '0'">旅客</span>
@@ -46,11 +46,13 @@
 				</el-table-column>
 				<el-table-column prop="status" label="状态">
 					<template slot-scope="scope">
-						<el-tag type="danger" v-if="scope.row.status === '0'">拼车中</el-tag>
-						<el-tag type="success" v-else-if="scope.row.status === '1'">载满出发中</el-tag>
-						<el-tag type="warning" v-else-if="scope.row.status === '2'">未满出发中</el-tag>
-						<el-tag type="info" v-else-if="scope.row.status === '3'">出发失败</el-tag>
-						<el-tag type="danger" v-else>完成</el-tag>
+						<el-tag type="success" v-if="scope.row.status === '0'">拼车中</el-tag>
+						<el-tag type="warning" v-else-if="scope.row.status === '1'">旅途中</el-tag>
+						<el-tag type="danger" v-else-if="scope.row.status === '2'">已满座</el-tag>
+						<el-tag type="success" v-else-if="scope.row.status === '3'">未满座</el-tag>
+						<el-tag type="danger" v-else-if="scope.row.status === '4'">出发失败</el-tag>
+						<el-tag type="info" v-else-if="scope.row.status === '5'">已取消</el-tag>
+						<el-tag type="success" v-else>已完成</el-tag>
 					</template>
 				</el-table-column>
 				<el-table-column label="操作" width="200">
@@ -84,7 +86,7 @@
 				<!-- 主体信息 -->
 				<el-form :model="queryForm" ref="queryFormRef" label-width="100px" class="form-text">
 					<el-form-item label="发起用户ID:">
-						<span>{{ queryForm.uid }}</span>
+						<span>{{ queryForm.user_id }}</span>
 					</el-form-item>
 					<el-form-item label="出发地:">
 						<span>{{ queryForm.start }}</span>
@@ -95,6 +97,9 @@
 					<el-form-item label="发起类型:">
 						<span v-if="queryForm.type === '0'">旅客发起</span>
 						<span v-else>车主发起</span>
+					</el-form-item>
+					<el-form-item label="旅行人数:" v-if="queryForm.type === '0'">
+						<span>{{ queryForm.trip }}</span>
 					</el-form-item>
 					<el-form-item label="可载人数:" v-if="queryForm.type === '1'">
 						<span>{{ queryForm.sum }}</span>
@@ -110,10 +115,12 @@
 					</el-form-item>
 					<el-form-item label="状态:">
 						<span v-if="queryForm.status === '0'">拼车中</span>
-						<span v-else-if="queryForm.status === '1'">载满出发中</span>
-						<span v-else-if="queryForm.status === '2'">未满出发中</span>
-						<span v-else-if="queryForm.status === '3'">出发失败</span>
-						<span v-else>完成</span>
+						<span v-else-if="queryForm.status === '1'">旅途中</span>
+						<span v-else-if="queryForm.status === '2'">已满座</span>
+						<span v-else-if="queryForm.status === '3'">未满座</span>
+						<span v-else-if="queryForm.status === '4'">出发失败</span>
+						<span v-else-if="queryForm.status === '5'">已取消</span>
+						<span v-else>已完成</span>
 					</el-form-item>
 				</el-form>
 			</el-dialog>
@@ -122,7 +129,13 @@
 			<el-dialog title="轨迹线" :visible.sync="locusDialogVisible" width="20%" @close="locusClose">
 				<div class="locus">
 					<el-timeline>
-						<el-timeline-item v-for="(activity, index) in locusData" :key="index" :icon="activity.icon" :type="activity.type" :timestamp="activity.timestamp">
+						<el-timeline-item
+							v-for="(activity, index) in locusData"
+							:key="index"
+							:icon="activity.icon"
+							:type="activity.type"
+							:timestamp="activity.id === 0 ? '出发地' : activity.status === '1' ? '已达到|' + activity.arrival_time : '未达到'"
+						>
 							{{ activity.content }}
 						</el-timeline-item>
 					</el-timeline>
@@ -263,16 +276,7 @@ export default {
 		async queryTime(id) {
 			const { data: res } = await this.$http.get(`journey/timeLine/${id}`);
 			if (res.code !== 200) return this.$message.error(res.msg);
-			res.data.forEach(item => {
-				var obj = {};
-				if (item.status === '1') {
-					obj.type = 'success';
-					obj.icon = 'el-icon-check';
-				}
-				obj.timestamp = this.$options.filters.date(item.scheduled_time);
-				obj.content = item.destination;
-				this.locusData.push(obj);
-			});
+			this.locusData = res.data.data;
 			this.locusDialogVisible = true;
 		},
 

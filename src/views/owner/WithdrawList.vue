@@ -89,7 +89,7 @@
 								<span>{{ auditForm.id }}</span>
 							</el-form-item>
 							<el-form-item label="车主ID:">
-								<span>{{ auditForm.onwer_id }}</span>
+								<span>{{ auditForm.owner_id }}</span>
 							</el-form-item>
 							<el-form-item label="用户ID:">
 								<span>{{ auditForm.user_id }}</span>

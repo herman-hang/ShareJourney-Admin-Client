@@ -30,15 +30,16 @@
           <el-tab-pane label="微信支付" name="wxpay">
             <el-form-item label="微信商户号" prop="wxpay_mchid"><el-input placeholder="请输入微信商户号" v-model="payForm.wxpay_mchid"></el-input></el-form-item>
             <el-form-item label="微信商户KEY" prop="wxpay_key"><el-input placeholder="请输入微信商户KEY" v-model="payForm.wxpay_key"></el-input></el-form-item>
-            <el-form-item label="公众号AppID" prop="wxpay_appid"><el-input placeholder="请输入应用AppID" v-model="payForm.wxpay_appid"></el-input></el-form-item>
+            <el-form-item label="小程序AppID" prop="wxpay_secret"><el-input placeholder="请输入微信小程序appid" v-model="payForm.wx_mini_appid"></el-input></el-form-item>
+            <el-form-item label="小程序Secret" prop="wxpay_secret"><el-input placeholder="请输入微信小程序Secret" v-model="payForm.wx_mini_secret"></el-input></el-form-item>
             <!-- 提交按钮 -->
             <el-form-item><el-button type="primary" icon="el-icon-edit" @click="submit">提交</el-button></el-form-item>
           </el-tab-pane>
-<!--          <el-tab-pane label="QQ钱包支付" name="qqpay">
+         <el-tab-pane label="QQ钱包支付" name="qqpay">
             <el-form-item label="QQ商户号" prop="qqpay_mchid"><el-input placeholder="请输入QQ商户号" v-model="payForm.qqpay_mchid"></el-input></el-form-item>
             <el-form-item label="QQ商户KEY" prop="qqpay_key"><el-input placeholder="请输入QQ商户KEY" v-model="payForm.qqpay_key"></el-input></el-form-item>
             <el-form-item><el-button type="primary" icon="el-icon-edit" @click="submit">提交</el-button></el-form-item>
-          </el-tab-pane> -->
+          </el-tab-pane>
 <!--          <el-tab-pane label="易支付" name="epay">
             <el-form-item label="易支付API" prop="epay_api"><el-input placeholder="请输入易支付API" v-model="payForm.epay_api"></el-input></el-form-item>
             <el-form-item label="易支付商户号" prop="epay_appid"><el-input placeholder="请输入易支付商户号" v-model="payForm.epay_appid"></el-input></el-form-item>

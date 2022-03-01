@@ -18,12 +18,20 @@
 				</el-row>
 			</div>
 			<el-table :data="buyLogData" border style="width: 100%">
-				<el-table-column prop="id" label="ID" width="100"></el-table-column>
-				<el-table-column prop="indent" label="订单号"></el-table-column>
-				<el-table-column prop="uid" label="用户ID" width="100"></el-table-column>
-				<el-table-column prop="start" label="出发地"></el-table-column>
-				<el-table-column prop="end" label="目的地"></el-table-column>
-				<el-table-column prop="money" label="金额(单位:元)"></el-table-column>
+				<el-table-column prop="id" label="ID" width="50"></el-table-column>
+				<el-table-column prop="indent" label="订单号" width="185"></el-table-column>
+				<el-table-column prop="user_id" label="用户ID" width="65"></el-table-column>
+				<el-table-column prop="start" label="出发地" width="200"></el-table-column>
+				<el-table-column prop="end" label="目的地" width="200"></el-table-column>
+				<el-table-column prop="money" label="付款金额(单位:元)" width="140"></el-table-column>
+				<el-table-column prop="owner_id" label="收款人(车主ID)" width="140">
+					<template slot-scope="scope">
+						<span v-if="scope.row.owner_id === null">暂无</span>
+						<span v-else>{{ scope.row.owner_id }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="km" label="公里数" width="65"></el-table-column>
+				<el-table-column prop="collection_money" label="收款金额(单位:元)" width="140"></el-table-column>
 				<el-table-column prop="pay_type" label="支付类型">
 					<template slot-scope="scope">
 						<el-tag type="success" v-if="scope.row.pay_type === '0'">微信支付</el-tag>
@@ -35,10 +43,12 @@
 				<el-table-column prop="status" label="付款状态">
 					<template slot-scope="scope">
 						<el-tag type="danger" v-if="scope.row.status === '0'">未付款</el-tag>
-						<el-tag type="success" v-else>已付款</el-tag>
+						<el-tag type="success" v-else-if="scope.row.status === '1'">已付款</el-tag>
+						<el-tag type="info" v-else-if="scope.row.status === '2'">已取消</el-tag>
+						<el-tag type="danger" v-else>出行失败</el-tag>
 					</template>
 				</el-table-column>
-				<el-table-column prop="create_time" label="下单时间">
+				<el-table-column prop="create_time" label="下单时间" width="160">
 					<template slot-scope="scope">
 						{{ scope.row.create_time | date }}
 					</template>
