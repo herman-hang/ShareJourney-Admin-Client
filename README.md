@@ -1,24 +1,9 @@
-# share_admin
+# 功能图片演示
 
-## Project setup
-```
-npm install
-```
+- 后的登录
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+![https://github.com/herman-hang/ShareJourney-Admin-Client/raw/master/登录.png]()
 
-### Compiles and minifies for production
-```
-npm run build
-```
+- 后台首页
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![https://github.com/herman-hang/ShareJourney-Admin-Client/raw/master/后台首页.png]()
