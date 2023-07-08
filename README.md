@@ -2,7 +2,7 @@
 
 - 后的登录
 
-![https://github.com/herman-hang/ShareJourney-Admin-Client/raw/master/demo/登录.png]()
+![/demo/登录.png]()
 
 - 后台首页
 
